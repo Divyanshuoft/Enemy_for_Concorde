@@ -38,6 +38,8 @@ ex1: .word 7
 ey1: .word 34
 ex2: .word 59
 ey2: .word 23
+eax1: .word 10
+eay1: .word 34
 dx1: .word 17
 dy1: .word 21
 x: .word 32
@@ -139,8 +141,41 @@ door:
         j health2loop
         
     end_loop:
-        j loop
+        j enemy_arrow1
         
+enemy_arrow1:
+# Retrieve the input arguments from the stack
+lw $s0, eax1      # Load the value of x from the top of the stack
+lw $s1, eay1      # Load the value of y after x on the stack
+
+# Start an infinite loop
+enemyloop:
+    # Check if x has reached 61
+    bgt $s0, 60, end_loop
+
+    # Draw a red pixel at (x, y)
+    lw $a2, RED       # load the value of the red color
+    move $a0, $s0     # move x coordinate to $a0
+    move $a1, $s1     # move y coordinate to $a1
+    jal draw_pixel    # call the draw_pixel function
+
+    # Wait for one second
+    li $v0, 33        # load system call code for sleep function
+    li $a0, 100000   # load delay value of 1 second (1000000 microseconds)
+    syscall
+
+    # Draw a black pixel at (x, y)
+    lw $a2, BLACK   # load the value of the black color
+    move $a0, $s0     # move x coordinate to $a0
+    move $a1, $s1     # move y coordinate to $a1
+    jal draw_pixel    # call the draw_pixel function
+
+    # Increment x and repeat the loop
+    addi $s0, $s0, 1  # add 1 to x coordinate
+    j enemyloop
+
+end_loop3:
+    j loop
 health_bar:
     # Retrieve the input arguments from the stack
     lw $s0, hx1      # Load the value of x from the top of the stack
