@@ -3,7 +3,7 @@
 
 .data
 
-tone: .byte 7      # Tone frequency
+tone: .byte 7      # frequency
 duration: .word 2000  # Tone duration (500 ms)
 duration2: .word 10000  # Tone duration (500 ms)
 hello_world: .asciiz "Hello world\n"  # the string to print
